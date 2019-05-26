@@ -18,6 +18,7 @@ Registradores::Registradores(Memoria *mem)
 {
     registradores[6] = 0;
     registradores[7] = 0;
+    clock = 0;
     this->mem = mem;
     RI = mem->read(registradores[7]);
     for(auto i{0u}; i < 4;i++)
@@ -72,4 +73,13 @@ void Registradores::print_registradores()
         std::cout << "R" << i << ":" << registradores[i] << " ";
     }
     std::cout << "\n";
+}
+
+/**
+ * show_clock
+ * @return, retorna o quantida de ciclo de relogio o programa levou para ser executado
+ */
+short Registradores::show_clock()
+{
+    return clock;
 }

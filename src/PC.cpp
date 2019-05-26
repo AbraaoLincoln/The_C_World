@@ -94,8 +94,18 @@ void PC::FS()
         case 1:// MOV
             if(po->mem->memoria[po->regs->read(7) + 2] > 255)
             {
-                std::cerr << po->mem->memoria[po->regs->read(7) + 2] << " , " << po->mem->memoria[po->regs->read(po->mem->memoria[po->regs->read(7) + 2] - 256)] << std::endl;
-                po->regs->write(po->mem->memoria[po->regs->read(7) + 1], po->mem->memoria[po->regs->read(po->mem->memoria[po->regs->read(7) + 2] - 256)]);
+                if(po->mem->memoria[po->regs->read(7) + 2] > 274) //Pos-incremento
+                {
+                    po->regs->write(po->mem->memoria[po->regs->read(7) + 1], po->mem->memoria[po->regs->read(po->mem->memoria[po->regs->read(7) + 2] - 275)]);
+                    po->regs->write(po->mem->memoria[po->regs->read(7) + 2] - 275, po->regs->read(po->mem->memoria[po->regs->read(7) + 2] - 275) + 1);
+                }else if(po->mem->memoria[po->regs->read(7) + 2] > 264)//Pre-decremento
+                {
+                    po->regs->write(po->mem->memoria[po->regs->read(7) + 2] - 265, po->regs->read(po->mem->memoria[po->regs->read(7) + 2] - 265) - 1);
+                    po->regs->write(po->mem->memoria[po->regs->read(7) + 1], po->mem->memoria[po->regs->read(po->mem->memoria[po->regs->read(7) + 2] - 265)]);
+                }else
+                {
+                    po->regs->write(po->mem->memoria[po->regs->read(7) + 1], po->mem->memoria[po->regs->read(po->mem->memoria[po->regs->read(7) + 2] - 256)]);
+                }
                 po->regs->inc_pc(3);
             }else
             {
@@ -105,7 +115,7 @@ void PC::FS()
                 po->regs->write(po->mem->memoria[po->regs->read(7) + 1], po->regs->RDM); //escreve no registrador indicado o valor que esta na memoria de dados
                 po->regs->inc_pc(3); //Incrementa o contador de programa para a proxima instrucao na memoria
             }
-            
+            po->regs->clock += 3;
             break;
         case 2: //ADD
             po->ula->operation(10, po->mem->memoria[po->regs->read(7) + 1], po->mem->memoria[po->regs->read(7) + 2]);

@@ -23,6 +23,7 @@ void Ula::operation(short op, int dest, int font)
     {
         case 0: //escreve no registrador de destino o resultado da operacao anterior
             m_reg->write(dest, result);
+            m_reg->clock -= 1;
             break;
         case 10: //Realiza a soma.
             std::cout << "ULA: SOMA\n";
@@ -55,6 +56,7 @@ void Ula::operation(short op, int dest, int font)
         default:
             break;
     }
+    m_reg->clock += 1;
 }
 
 /**

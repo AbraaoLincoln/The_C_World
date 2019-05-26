@@ -75,11 +75,25 @@ void Memoria::load_instructions(std::string nome_do_arquivo)
                 }
 
                 substr = instruction.substr(instruction.find(',')+1);
+                //std::cerr << substr << "\n";
                 if(dic_opcode.mnemonicosTonumeric.count(substr) == 1)
                 {
                     if(substr.find('(') >= 0)
                     {
-                        memoria[index] = dic_opcode.mnemonicosTonumeric[substr] + 256; //256 = usando mode de enderecamento indireto
+                        if(substr.find('+') != std::string::npos)
+                        {
+                            //std::cerr << "+\n";
+                            memoria[index] = dic_opcode.mnemonicosTonumeric[substr] + 275; //275 = usando mode de enderecamento indireto com pos-incremento
+                        }else if(substr.find('-') != std::string::npos)
+                        {
+                            //std::cerr << "-\n";
+                            memoria[index] = dic_opcode.mnemonicosTonumeric[substr] + 265; //265 = usando mode de enderecamento indireto com pre-decremento
+                        }else
+                        {
+                            //std::cerr << "(\n";
+                            memoria[index] = dic_opcode.mnemonicosTonumeric[substr] + 256; //256 = usando mode de enderecamento indireto
+                        }
+                        
                     }else
                     {
                         memoria[index] = dic_opcode.mnemonicosTonumeric[substr];
@@ -119,12 +133,12 @@ void Memoria::print_memoria()
     }
     std::cout << "\n======================================================================================" << std::endl;
 
-    /*
+    
     std::cout << "Memoria de Dados:\n";
     for(auto i{128u}; i < 255; i++)
     {
         std::cout << memoria[i] << " ";
     }
     std::cout << "\n====================================================================================================" << std::endl;
-    */
+    
 }
