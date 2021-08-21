@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "./comun.h"
+#include <stdbool.h>
 
 #define SIZE 20
 

@@ -15,8 +15,18 @@ int main(void) {
     n1 = createNode("foobar", "string");
     insert(linkedList, n1);
     display(linkedList);
+    printf("=======================\n");
+    linkedList = shift(linkedList);
     //printf("%i\n", nodeAreEquals(linkedList, n));
     //printf("%s\n", n1->type);
-    removeNode(linkedList, n);
+    //removeNode(linkedList, n);
     display(linkedList);
+    printf("=======================\n");
+    linkedList = pop(linkedList);
+    display(linkedList);
+    printf("=======================\n");
+    linkedList = pop(linkedList);
+    //linkedList = shift(linkedList);
+    display(linkedList);
+    printf("=======================\n");
 }

@@ -21,6 +21,11 @@ void freeNode(struct Node *node) {
     free(node);
 }
 
+void erroInvalidParam() {
+    printf("Invalid Param\n");
+    exit(EXIT_FAILURE);
+}
+
 struct Node* createNode(char* name, char* type) {
     struct Node *node = (struct Node*) malloc(sizeof(struct Node));
     node->name = (char*) malloc(strlen(name) * sizeof(char));
@@ -33,6 +38,7 @@ struct Node* createNode(char* name, char* type) {
 }
 
 bool insert(struct Node *root, struct Node *newNode) {
+    if(root == NULL || newNode == NULL) erroInvalidParam();
     struct Node *currentNode = root;
 
     while(true) {
@@ -57,6 +63,7 @@ bool insert(struct Node *root, struct Node *newNode) {
 }
 
 bool removeNode(struct Node *root, struct Node *node) {
+    if(root == NULL || node == NULL) erroInvalidParam();
     struct Node *currentNode = root;
     
     while(true) {
@@ -78,6 +85,7 @@ bool removeNode(struct Node *root, struct Node *node) {
 }
 
 struct Node* find(struct Node *root, struct Node *node) {
+    if(root == NULL || node == NULL) erroInvalidParam();
     struct Node *currentNode = root;
     
     while(true) {
@@ -93,9 +101,44 @@ struct Node* find(struct Node *root, struct Node *node) {
     };
 }
 
+struct Node* shift(struct Node *root) {
+    if(root == NULL) erroInvalidParam();
+    struct Node *newRoot;
+
+    if(root->next == NULL) {
+        newRoot = NULL;
+    }else {
+        newRoot = root->next;
+        newRoot->previous = NULL; 
+    }
+
+    freeNode(root);
+    return newRoot;
+}
+
+struct Node* pop(struct Node *root) {
+    if(root == NULL) erroInvalidParam();
+    struct Node *currentNode = root;
+
+    if(root->next == NULL) {
+        return NULL;
+    }else {
+        while(currentNode->next != NULL) {
+            currentNode = currentNode->next;
+        }
+
+        currentNode->previous->next = NULL;
+        freeNode(currentNode);
+        return root;
+    }
+}
+
+
 void display(struct Node *root) {
     struct Node *currentNode = root;
     
+    if(root == NULL) printf("Empty Linked list\n");
+
     while(currentNode != NULL) {
         printf("%s\n", currentNode->name);
         printf("%s\n", currentNode->type);
@@ -103,4 +146,3 @@ void display(struct Node *root) {
         currentNode = currentNode->next;
     };
 }
-
