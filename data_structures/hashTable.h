@@ -1,21 +1,31 @@
+#ifndef HashTable_File
+#define HashTable_File
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "./linkedList.h"
 
 #define PRIME 31
 
 typedef struct HashTable
 {
     int size;
-    struct Node **hashArray;
+    Node **hashArray;
 } HashTable;
 
+void setHashTableToNull(HashTable* hashTable) {
+    for(int i = 0; i < hashTable->size; i++) {
+        hashTable->hashArray[i] = NULL;
+    }
+}
+
 HashTable* hashTable_create(int size) {
-    HashTable *hashTable = (HashTable*) malloc(sizeof(HashTable));;
+    HashTable *hashTable = (HashTable*) malloc(sizeof(HashTable));
     hashTable->size = size;
     hashTable->hashArray = (Node**) malloc(size * sizeof(*hashTable->hashArray));
-
+    setHashTableToNull(hashTable);
     return hashTable;
 }
 
@@ -29,6 +39,25 @@ int hashTable_hashKey(char *key, int hashTableSize) {
     return hash;
 }
 
-void hashTable_insert(struct HashTable* hashTable, char* key, struct Node *node) {
+void hashTable_insert(HashTable* hashTable, char* key, Node *node) {
+    int hashKey = hashTable_hashKey(key, hashTable->size);
 
+    if(hashTable->hashArray[hashKey] == NULL) {
+        hashTable->hashArray[hashKey] = node;
+    }else {
+        linkedList_insert(hashTable->hashArray[hashKey], node);
+    }
 }
+
+void hashTable_remove(HashTable* hashTable, char* key) {
+    int hashKey = hashTable_hashKey(key, hashTable->size);
+
+    if(hashTable->hashArray[hashKey] != NULL) {
+        Node* node = linkedList_findByKey(hashTable->hashArray[hashKey], key);
+
+        if(node != NULL) 
+            hashTable->hashArray[hashKey] = linkedList_remove(hashTable->hashArray[hashKey], node);
+    }
+}
+
+#endif

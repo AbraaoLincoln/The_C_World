@@ -45,9 +45,9 @@ void testHashTable() {
     Node *n1;
     Node *n2;
     n1 = linkedList_createNode("foo", "string");
-    hashTable->hashArray[0] = n1;
-    printf("%s\n", hashTable->hashArray[0]->name);
-    printf("%s\n", hashTable->hashArray[0]->type);
+    hashTable->hashArray[hashTable_hashKey(n1->name, hashTable->size)] = n1;
+    printf("%s\n", hashTable->hashArray[hashTable_hashKey(n1->name, hashTable->size)]->name);
+    printf("%s\n", hashTable->hashArray[hashTable_hashKey(n1->name, hashTable->size)]->type);
     n2 = linkedList_createNode("bar", "string");
     hashTable->hashArray[1] = n2;
     printf("%s\n", hashTable->hashArray[1]->name);

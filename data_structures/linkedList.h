@@ -1,3 +1,5 @@
+#ifndef linkedList_file
+#define linkedList_file
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,17 +9,23 @@ typedef struct Node
 {
     char* name;
     char* type;
+    char* key;
     struct Node *previous; 
     struct Node *next; 
 } Node;
 
-bool linkedList_nodeAreEquals(struct Node *node1, struct Node *node2) {
-    return  (strcmp(node1->name, node2->name) == 0) && (strcmp(node1->type, node2->type) == 0);
+bool linkedList_nodeAreEquals(Node *node1, Node *node2) {
+    return (strcmp(node1->key, node2->key) == 0) && (strcmp(node1->name, node2->name) == 0) && (strcmp(node1->type, node2->type) == 0);
 }
 
-void linkedList_freeNode(struct Node *node) {
+bool linkedList_nodesHaveTheSameKey(Node *node1, Node *node2) {
+    return strcmp(node1->key, node2->key) == 0;
+}
+
+void linkedList_freeNode(Node *node) {
     free(node->name);
     free(node->type);
+    free(node->key);
     free(node);
 }
 
@@ -26,8 +34,8 @@ void linkedList_erroInvalidParam() {
     exit(EXIT_FAILURE);
 }
 
-struct Node* linkedList_createNode(char* name, char* type) {
-    struct Node *node = (struct Node*) malloc(sizeof(struct Node));
+Node* linkedList_createNode(char* name, char* type) {
+    Node *node = (Node*) malloc(sizeof(Node));
     node->name = (char*) malloc(strlen(name) * sizeof(char));
     node->type = (char*) malloc(strlen(type) * sizeof(char));
     strcpy(node->name, name);
@@ -37,12 +45,12 @@ struct Node* linkedList_createNode(char* name, char* type) {
     return node;
 }
 
-bool linkedList_insert(struct Node *root, struct Node *newNode) {
+bool linkedList_insert(Node *root, Node *newNode) {
     if(root == NULL || newNode == NULL) linkedList_erroInvalidParam();
-    struct Node *currentNode = root;
+    Node *currentNode = root;
 
     while(true) {
-        if(linkedList_nodeAreEquals(currentNode, newNode)) {
+        if(linkedList_nodesHaveTheSameKey(currentNode, newNode)) {
             newNode->previous = currentNode->previous;
             newNode->next = currentNode->next;
             currentNode->previous->next = newNode;
@@ -62,21 +70,35 @@ bool linkedList_insert(struct Node *root, struct Node *newNode) {
     return false;
 }
 
-bool linkedList_remove(struct Node *root, struct Node *node) {
+Node* linkedList_remove(Node *root, Node *node) {
     if(root == NULL || node == NULL) linkedList_erroInvalidParam();
-    struct Node *currentNode = root;
+    Node *currentNode = root;
+    Node *temp;
     
     while(true) {
-        if(linkedList_nodeAreEquals(currentNode, node)) {
-            if(currentNode->previous != NULL)
+        if(linkedList_nodesHaveTheSameKey(currentNode, node)) {
+            if(currentNode->previous == NULL && currentNode->next != NULL){
+                temp = currentNode->next;
+                linkedList_freeNode(currentNode);
+                return temp;
+            }
+
+            if(currentNode->previous == NULL && currentNode->next == NULL){
+                linkedList_freeNode(currentNode);
+                return NULL;
+            }
+
+            if(currentNode->previous != NULL )
                 currentNode->previous->next = currentNode->next;
+
             if(currentNode->next != NULL) 
                 currentNode->next->previous = currentNode->previous;
+
             linkedList_freeNode(currentNode);
-            return true;
+            return root;
         }else {
             if(currentNode->next == NULL) {
-                return false;
+                return root;
             }else {
                 currentNode = currentNode->next;
             }
@@ -84,12 +106,12 @@ bool linkedList_remove(struct Node *root, struct Node *node) {
     };
 }
 
-struct Node* linkedList_find(struct Node *root, struct Node *node) {
+Node* linkedList_find(Node *root, Node *node) {
     if(root == NULL || node == NULL) linkedList_erroInvalidParam();
-    struct Node *currentNode = root;
+    Node *currentNode = root;
     
     while(true) {
-        if(linkedList_nodeAreEquals(currentNode, node)) {
+        if(linkedList_nodesHaveTheSameKey(currentNode, node)) {
             return currentNode;
         }else {
             if(currentNode->next == NULL) {
@@ -101,9 +123,26 @@ struct Node* linkedList_find(struct Node *root, struct Node *node) {
     };
 }
 
-struct Node* linkedList_shift(struct Node *root) {
+Node* linkedList_findByKey(Node *root, char* key) {
+    if(root == NULL || key == NULL) linkedList_erroInvalidParam();
+    Node *currentNode = root;
+    
+    while(true) {
+        if(strcmp(currentNode->key, key) == 0) {
+            return currentNode;
+        }else {
+            if(currentNode->next == NULL) {
+                return NULL;
+            }else {
+                currentNode = currentNode->next;
+            }
+        }
+    };
+}
+
+Node* linkedList_shift(Node *root) {
     if(root == NULL) linkedList_erroInvalidParam();
-    struct Node *newRoot;
+    Node *newRoot;
 
     if(root->next == NULL) {
         newRoot = NULL;
@@ -116,9 +155,9 @@ struct Node* linkedList_shift(struct Node *root) {
     return newRoot;
 }
 
-struct Node* linkedList_pop(struct Node *root) {
+Node* linkedList_pop(Node *root) {
     if(root == NULL) linkedList_erroInvalidParam();
-    struct Node *currentNode = root;
+    Node *currentNode = root;
 
     if(root->next == NULL) {
         return NULL;
@@ -134,8 +173,8 @@ struct Node* linkedList_pop(struct Node *root) {
 }
 
 
-void linkedList_display(struct Node *root) {
-    struct Node *currentNode = root;
+void linkedList_display(Node *root) {
+    Node *currentNode = root;
     
     if(root == NULL) printf("Empty Linked list\n");
 
@@ -146,3 +185,5 @@ void linkedList_display(struct Node *root) {
         currentNode = currentNode->next;
     };
 }
+
+#endif
