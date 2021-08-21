@@ -4,27 +4,21 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "./tuple.h"
 
 typedef struct Node
 {
-    char* name;
-    char* type;
     char* key;
     struct Node *previous; 
     struct Node *next; 
+    Tuple *tupla;
 } Node;
-
-bool linkedList_nodeAreEquals(Node *node1, Node *node2) {
-    return (strcmp(node1->key, node2->key) == 0) && (strcmp(node1->name, node2->name) == 0) && (strcmp(node1->type, node2->type) == 0);
-}
 
 bool linkedList_nodesHaveTheSameKey(Node *node1, Node *node2) {
     return strcmp(node1->key, node2->key) == 0;
 }
 
 void linkedList_freeNode(Node *node) {
-    free(node->name);
-    free(node->type);
     free(node->key);
     free(node);
 }
@@ -34,40 +28,48 @@ void linkedList_erroInvalidParam() {
     exit(EXIT_FAILURE);
 }
 
-Node* linkedList_createNode(char* name, char* type) {
+Node* linkedList_createNode() {
     Node *node = (Node*) malloc(sizeof(Node));
-    node->name = (char*) malloc(strlen(name) * sizeof(char));
-    node->type = (char*) malloc(strlen(type) * sizeof(char));
-    strcpy(node->name, name);
-    strcpy(node->type, type);
+    node->key = NULL;
     node->previous = NULL;
     node->next = NULL;
+    node->tupla = NULL;
     return node;
 }
 
-bool linkedList_insert(Node *root, Node *newNode) {
-    if(root == NULL || newNode == NULL) linkedList_erroInvalidParam();
+Node* linkedList_insert(Node *root, Node *newNode) {
+    if(newNode == NULL) linkedList_erroInvalidParam();
     Node *currentNode = root;
+    
+    if(root != NULL) {
+        while(true) {
+            if(linkedList_nodesHaveTheSameKey(currentNode, newNode)) {
+                newNode->previous = currentNode->previous;
+                newNode->next = currentNode->next;
+                if(currentNode->previous != NULL)
+                    currentNode->previous->next = newNode;
+                
+                if(currentNode->previous == NULL) {
+                    linkedList_freeNode(currentNode);
+                    return newNode;
+                }else {
+                    linkedList_freeNode(currentNode);
+                    return root;
+                }
 
-    while(true) {
-        if(linkedList_nodesHaveTheSameKey(currentNode, newNode)) {
-            newNode->previous = currentNode->previous;
-            newNode->next = currentNode->next;
-            currentNode->previous->next = newNode;
-            linkedList_freeNode(currentNode);
-            return true;
-        }else {
-            if(currentNode->next == NULL) {
-                currentNode->next = newNode;
-                newNode->previous = currentNode;
-                return true;
             }else {
-                currentNode = currentNode->next;
+                if(currentNode->next == NULL) {
+                    currentNode->next = newNode;
+                    newNode->previous = currentNode;
+                    return root;
+                }else {
+                    currentNode = currentNode->next;
+                }
             }
-        }
-    };
-
-    return false;
+        };
+    }else {
+        return newNode;
+    }
 }
 
 Node* linkedList_remove(Node *root, Node *node) {
@@ -176,12 +178,16 @@ Node* linkedList_pop(Node *root) {
 void linkedList_display(Node *root) {
     Node *currentNode = root;
     
-    if(root == NULL) printf("Empty Linked list\n");
-
+    if(root == NULL) {
+        printf("Empty Linked list\n");
+    }else {
+        printf("=========-Display Linked list-=========\n");
+    }
     while(currentNode != NULL) {
-        printf("%s\n", currentNode->name);
-        printf("%s\n", currentNode->type);
-        printf("---------------------\n");
+        if(currentNode->key != NULL) printf("%s\n", currentNode->key);
+        printf("%s\n", currentNode->tupla->name);
+        printf("%s\n", currentNode->tupla->type);
+        printf("--------------------\n");
         currentNode = currentNode->next;
     };
 }

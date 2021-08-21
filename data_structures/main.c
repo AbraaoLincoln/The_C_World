@@ -41,19 +41,28 @@ void testLinkedList() {
 }
 
 void testHashTable() {
-    HashTable *hashTable = hashTable_create(20);
-    Node *n1;
-    Node *n2;
-    n1 = linkedList_createNode("foo", "string");
-    hashTable->hashArray[hashTable_hashKey(n1->name, hashTable->size)] = n1;
-    printf("%s\n", hashTable->hashArray[hashTable_hashKey(n1->name, hashTable->size)]->name);
-    printf("%s\n", hashTable->hashArray[hashTable_hashKey(n1->name, hashTable->size)]->type);
-    n2 = linkedList_createNode("bar", "string");
-    hashTable->hashArray[1] = n2;
-    printf("%s\n", hashTable->hashArray[1]->name);
-    printf("%s\n", hashTable->hashArray[1]->type);
-    printf("%i\n", hashTable_hashKey("foo", hashTable->size));
-    printf("%i\n", hashTable_hashKey("bar", hashTable->size));
-    printf("%i\n", hashTable_hashKey("foo", hashTable->size));
-    printf("%i\n", hashTable_hashKey("somaa", hashTable->size));
+    HashTable *hashTable = hashTable_create(15);
+
+    Tuple *t1 = tuple_create("foo", "int");
+    hashTable_insert(hashTable, "var", t1);
+    hashTable_display(hashTable);
+    // printf("====================\n");
+    Tuple *t2 = tuple_create("foo", "float");
+    hashTable_insert(hashTable, "var", t2);
+    hashTable_display(hashTable);
+
+    //test
+    hashTable_insert(hashTable, "var1", t2);
+    hashTable_insert(hashTable, "var2", t2);
+    hashTable_insert(hashTable, "var3", t2);
+    hashTable_insert(hashTable, "var4", t2);
+    hashTable_insert(hashTable, "var5", t2);
+    hashTable_insert(hashTable, "var6", t2);
+    hashTable_insert(hashTable, "var7", t2);
+    hashTable_insert(hashTable, "var8", t2);
+    hashTable_insert(hashTable, "var9", t2);
+    hashTable_insert(hashTable, "var10", t2);
+    hashTable_insert(hashTable, "var11", t2);
+    hashTable_insert(hashTable, "var12", t2);
+    hashTable_display(hashTable);
 }
