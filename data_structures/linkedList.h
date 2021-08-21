@@ -3,30 +3,30 @@
 #include <string.h>
 #include <stdbool.h>
 
-struct Node
+typedef struct Node
 {
     char* name;
     char* type;
     struct Node *previous; 
     struct Node *next; 
-};
+} Node;
 
-bool nodeAreEquals(struct Node *node1, struct Node *node2) {
+bool linkedList_nodeAreEquals(struct Node *node1, struct Node *node2) {
     return  (strcmp(node1->name, node2->name) == 0) && (strcmp(node1->type, node2->type) == 0);
 }
 
-void freeNode(struct Node *node) {
+void linkedList_freeNode(struct Node *node) {
     free(node->name);
     free(node->type);
     free(node);
 }
 
-void erroInvalidParam() {
+void linkedList_erroInvalidParam() {
     printf("Invalid Param\n");
     exit(EXIT_FAILURE);
 }
 
-struct Node* createNode(char* name, char* type) {
+struct Node* linkedList_createNode(char* name, char* type) {
     struct Node *node = (struct Node*) malloc(sizeof(struct Node));
     node->name = (char*) malloc(strlen(name) * sizeof(char));
     node->type = (char*) malloc(strlen(type) * sizeof(char));
@@ -37,16 +37,16 @@ struct Node* createNode(char* name, char* type) {
     return node;
 }
 
-bool insert(struct Node *root, struct Node *newNode) {
-    if(root == NULL || newNode == NULL) erroInvalidParam();
+bool linkedList_insert(struct Node *root, struct Node *newNode) {
+    if(root == NULL || newNode == NULL) linkedList_erroInvalidParam();
     struct Node *currentNode = root;
 
     while(true) {
-        if(nodeAreEquals(currentNode, newNode)) {
+        if(linkedList_nodeAreEquals(currentNode, newNode)) {
             newNode->previous = currentNode->previous;
             newNode->next = currentNode->next;
             currentNode->previous->next = newNode;
-            freeNode(currentNode);
+            linkedList_freeNode(currentNode);
             return true;
         }else {
             if(currentNode->next == NULL) {
@@ -62,17 +62,17 @@ bool insert(struct Node *root, struct Node *newNode) {
     return false;
 }
 
-bool removeNode(struct Node *root, struct Node *node) {
-    if(root == NULL || node == NULL) erroInvalidParam();
+bool linkedList_remove(struct Node *root, struct Node *node) {
+    if(root == NULL || node == NULL) linkedList_erroInvalidParam();
     struct Node *currentNode = root;
     
     while(true) {
-        if(nodeAreEquals(currentNode, node)) {
+        if(linkedList_nodeAreEquals(currentNode, node)) {
             if(currentNode->previous != NULL)
                 currentNode->previous->next = currentNode->next;
             if(currentNode->next != NULL) 
                 currentNode->next->previous = currentNode->previous;
-            freeNode(currentNode);
+            linkedList_freeNode(currentNode);
             return true;
         }else {
             if(currentNode->next == NULL) {
@@ -84,12 +84,12 @@ bool removeNode(struct Node *root, struct Node *node) {
     };
 }
 
-struct Node* find(struct Node *root, struct Node *node) {
-    if(root == NULL || node == NULL) erroInvalidParam();
+struct Node* linkedList_find(struct Node *root, struct Node *node) {
+    if(root == NULL || node == NULL) linkedList_erroInvalidParam();
     struct Node *currentNode = root;
     
     while(true) {
-        if(nodeAreEquals(currentNode, node)) {
+        if(linkedList_nodeAreEquals(currentNode, node)) {
             return currentNode;
         }else {
             if(currentNode->next == NULL) {
@@ -101,8 +101,8 @@ struct Node* find(struct Node *root, struct Node *node) {
     };
 }
 
-struct Node* shift(struct Node *root) {
-    if(root == NULL) erroInvalidParam();
+struct Node* linkedList_shift(struct Node *root) {
+    if(root == NULL) linkedList_erroInvalidParam();
     struct Node *newRoot;
 
     if(root->next == NULL) {
@@ -112,12 +112,12 @@ struct Node* shift(struct Node *root) {
         newRoot->previous = NULL; 
     }
 
-    freeNode(root);
+    linkedList_freeNode(root);
     return newRoot;
 }
 
-struct Node* pop(struct Node *root) {
-    if(root == NULL) erroInvalidParam();
+struct Node* linkedList_pop(struct Node *root) {
+    if(root == NULL) linkedList_erroInvalidParam();
     struct Node *currentNode = root;
 
     if(root->next == NULL) {
@@ -128,13 +128,13 @@ struct Node* pop(struct Node *root) {
         }
 
         currentNode->previous->next = NULL;
-        freeNode(currentNode);
+        linkedList_freeNode(currentNode);
         return root;
     }
 }
 
 
-void display(struct Node *root) {
+void linkedList_display(struct Node *root) {
     struct Node *currentNode = root;
     
     if(root == NULL) printf("Empty Linked list\n");
