@@ -4,15 +4,18 @@
 #include "./linkedList.h"
 #include "./hashTable.h"
 #include "./stack.h"
+#include "./utils.h"
 
 void testLinkedList();
 void testHashTable();
 void testStack();
+void testeHashtableAndStack();
 
 int main(void) {
     //testLinkedList();
     //testHashTable();
-    testStack();
+    //testStack();
+    testeHashtableAndStack();
 }
 
 void testLinkedList() {
@@ -147,4 +150,26 @@ void testStack() {
     if(top != NULL) printf("%s\n", top);
 
     stack_free(s);
+}
+
+void testeHashtableAndStack() {
+    HashTable *hashTable = hashTable_create(10);
+    Stack *s = stack_create();
+    char *key;
+
+    printf("\nStack - Push\n\n");
+    stack_push(s, "global");
+
+    printf("\nHashTable - Insert\n\n");
+    Tuple *t1 = tuple_create("bar", "int");
+    hashTable_insert(hashTable, utils_strcat("var", stack_top(s)), t1);
+    
+    printf("\nHashTable - Lookup\n\n");
+    Tuple* t = hashTable_find(hashTable, utils_strcat("bar", stack_top(s)));
+
+    if(t != NULL) {
+        tuple_display(t);
+    }else{
+        printf("key: %s not found\n", utils_strcat("var", stack_top(s)));
+    };
 }
