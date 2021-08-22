@@ -7,6 +7,7 @@
 #include "./utils.h"
 
 int main(void) {
+    char *top;
     char *bar = (char*) malloc(3 * sizeof(char));
     strcpy(bar, "bar");
 
@@ -80,10 +81,65 @@ int main(void) {
     hashTable_remove(hashTable, bar);
     hashTable_display(hashTable);
 
-    printf("\nTuple - Criar\n\n");
-    /* ======================= TUPLE ======================= */
+    printf("\nStack - Criar\n\n");
+    /* ======================= STACK ======================= */
     /*
-        A struct Tuple é usada para armazenar informações importantes para a analise, no momento
-        as informações que podem ser armazendas são: nome e tipo respectivamente.
+        A struct Stack é usada para armazenar um conjunto de strings.
     */
+
+    /* Criando uma Stack*/
+    //Para criar uma stack usar a função stack_create é retornado a referencia da stack criada.
+    Stack *stack = stack_create();
+    stack_display(stack);
+
+    printf("\nStack - Adicionar\n\n");
+    /* Adiconando String no topo da stack*/
+    /*
+        1 - O primeiro parametro passado para a funcao stack_push é a referencia para a stack 
+        ao qual a string será colocada no topo. 
+
+        2 - O segundo parametro é a string que será adicionada, essa string pode ser  
+        literal ou a referencia para o primeiro caracter da string(char*).
+    
+    */
+    stack_push(stack, "foo");
+    stack_push(stack, bar);
+    stack_push(stack, "foobar");
+    stack_display(stack);
+
+    printf("\nStack - Top\n\n");
+    /* Buscar String no topo da stack*/
+    /*
+        1 - O parametro passado para a funcao stack_top é a referencia para a stack 
+        na qual a busca será feita. 
+
+        return: é retornado a referencia para a string que esta no topo da stack, se a stack estiver
+        vazia sera retornado NULL.
+    */
+   printf("Top da stack\n");
+    top = stack_top(stack);
+    if(top != NULL) printf("%s\n", top);
+    
+    /* Buscar String na stack por indice*/
+    /*
+        1 - O primeiro parametro passado para a funcao stack_topByIndex é a referencia para a stack 
+        na qual a busca será feita. 
+
+        2 - O segundo parametro é o indice o qual será considerado como o topo da stack.
+
+        return: é retornado a referencia para a string que esta no indice, se a stack estiver
+        vazia ou o indice é invalido, sera retornado NULL.
+    */
+    printf("\nTop da stack por indice(0)\n");
+    top = stack_topByIndex(stack, 0);
+    if(top != NULL) printf("%s\n", top);
+
+    printf("\nStack - Pop\n\n");
+    /* Removendo String do topo da stack*/
+    /*
+        1 - O parametro passado para a funcao stack_pop é a referencia para a stack 
+        na qual a string no topo será removida. 
+    */
+    stack_pop(stack);
+    stack_display(stack);
 }

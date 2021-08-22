@@ -72,10 +72,14 @@ char* stack_topByIndex(Stack *stack, int index) {
 
 void stack_display(Stack *stack) {
     printf("=========-Display Stack-=========\n");
-    for(int i = stack->size - 1; i >= 0; i--) {
-        printf("%s\n", stack->stackArray[i]);
+    if(stack->size > 0) {
+        for(int i = stack->size - 1; i >= 0; i--) {
+            printf("%s\n", stack->stackArray[i]);
+        }
+        printf("--------------------\n");
+    }else {
+        printf("Empty Stack\n");
     }
-    printf("--------------------\n");
 }
 
 #endif
