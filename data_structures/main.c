@@ -41,19 +41,22 @@ void testLinkedList() {
 }
 
 void testHashTable() {
-    HashTable *hashTable = hashTable_create(15);
+    HashTable *hashTable = hashTable_create(10);
 
-    Tuple *t1 = tuple_create("foo", "int");
+    Tuple *t1 = tuple_create("bar", "int");
     hashTable_insert(hashTable, "var", t1);
-    hashTable_display(hashTable);
+    //hashTable_display(hashTable);
     // printf("====================\n");
     Tuple *t2 = tuple_create("foo", "float");
     hashTable_insert(hashTable, "var", t2);
-    hashTable_display(hashTable);
+    //hashTable_display(hashTable);
+    Tuple *t3 = tuple_create("foo", "int");
+    hashTable_insert(hashTable, "var2", t2);
 
     //test
+    printf("\nInsert\n\n");
     hashTable_insert(hashTable, "var1", t2);
-    hashTable_insert(hashTable, "var2", t2);
+    hashTable_insert(hashTable, "var2", t3);
     hashTable_insert(hashTable, "var3", t2);
     hashTable_insert(hashTable, "var4", t2);
     hashTable_insert(hashTable, "var5", t2);
@@ -64,5 +67,35 @@ void testHashTable() {
     hashTable_insert(hashTable, "var10", t2);
     hashTable_insert(hashTable, "var11", t2);
     hashTable_insert(hashTable, "var12", t2);
-    hashTable_display(hashTable);
+    hashTable_insert(hashTable, "var13", t2);
+    hashTable_insert(hashTable, "var14", t2);
+    hashTable_insert(hashTable, "var15", t2);
+    // hashTable_display(hashTable);
+
+    //remove
+    // printf("\nRemove\n\n");
+    // hashTable_remove(hashTable, "var2");
+    // hashTable_remove(hashTable, "var11");
+    // hashTable_display(hashTable);
+
+    //find
+    printf("\nFind\n\n");
+    Tuple* t = hashTable_find(hashTable, "var");
+
+    if(t != NULL) {
+        tuple_display(t);
+    };
+
+    t = hashTable_find(hashTable, "bar");
+
+    if(t != NULL) {
+        tuple_display(t);
+    };
+
+    t = hashTable_find(hashTable, "var2");
+
+    if(t != NULL) {
+        tuple_display(t);
+    };
+
 }

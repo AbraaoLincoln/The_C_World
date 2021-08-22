@@ -29,13 +29,18 @@ HashTable* hashTable_create(int size) {
     return hashTable;
 }
 
+void hashTable_freeHashtable(HashTable* hashTable) {
+    free(hashTable->hashArray);
+    free(hashTable);
+}
+
 int hashTable_hashKey(char *key, int hashTableSize) {
     int hash = 0;
 
     for(int i = 0; i < strlen(key); i++) {
         hash = (PRIME * hash + key[i]) % hashTableSize;
     }
-
+    
     return hash;
 }
 
@@ -44,7 +49,7 @@ void hashTable_insert(HashTable* hashTable, char* key, Tuple *tuple) {
     Node *node = linkedList_createNode();
     node->key = (char*) malloc(strlen(key) * sizeof(char));
     strcpy(node->key, key);
-    node->tupla = tuple;
+    node->tuple = tuple;
     
     if(hashTable->hashArray[hashKey] == NULL) {
         hashTable->hashArray[hashKey] = node;
@@ -66,8 +71,15 @@ void hashTable_remove(HashTable* hashTable, char* key) {
 
 Tuple* hashTable_find(HashTable* hashTable, char* key) {
     int hashKey = hashTable_hashKey(key, hashTable->size);
-    Node* node = linkedList_findByKey(hashTable->hashArray[hashKey], key);
-    return node->tupla;
+    
+    if(hashTable->hashArray[hashKey] != NULL) {
+        Node* node = linkedList_findByKey(hashTable->hashArray[hashKey], key);
+        if(node != NULL) return node->tuple;
+
+        return NULL;
+    }else {
+        return NULL;
+    }
 }
 
 void hashTable_display(HashTable* hashTable) {

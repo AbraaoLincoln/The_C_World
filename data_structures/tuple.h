@@ -20,4 +20,17 @@ Tuple* tuple_create(char* name, char* type) {
     return tuple;
 }
 
+void tuple_freeTuple(Tuple* tuple) {
+    free(tuple->name);
+    free(tuple->type);
+    free(tuple);
+}
+
+void tuple_display(Tuple* tuple) {
+    printf("=========-Display Tuple-=========\n");
+    printf("%s\n", tuple->name);
+    printf("%s\n", tuple->type);
+    printf("--------------------\n");
+}
+
 #endif

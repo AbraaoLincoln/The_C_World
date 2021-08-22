@@ -11,7 +11,7 @@ typedef struct Node
     char* key;
     struct Node *previous; 
     struct Node *next; 
-    Tuple *tupla;
+    Tuple *tuple;
 } Node;
 
 bool linkedList_nodesHaveTheSameKey(Node *node1, Node *node2) {
@@ -20,6 +20,7 @@ bool linkedList_nodesHaveTheSameKey(Node *node1, Node *node2) {
 
 void linkedList_freeNode(Node *node) {
     free(node->key);
+    //tuple_freeTuple(node->tuple);
     free(node);
 }
 
@@ -33,7 +34,7 @@ Node* linkedList_createNode() {
     node->key = NULL;
     node->previous = NULL;
     node->next = NULL;
-    node->tupla = NULL;
+    node->tuple = NULL;
     return node;
 }
 
@@ -185,8 +186,10 @@ void linkedList_display(Node *root) {
     }
     while(currentNode != NULL) {
         if(currentNode->key != NULL) printf("%s\n", currentNode->key);
-        printf("%s\n", currentNode->tupla->name);
-        printf("%s\n", currentNode->tupla->type);
+        if(currentNode->tuple != NULL) {
+            if(currentNode->tuple->name != NULL) printf("%s\n", currentNode->tuple->name);
+            if(currentNode->tuple->type != NULL) printf("%s\n", currentNode->tuple->type);
+        }
         printf("--------------------\n");
         currentNode = currentNode->next;
     };
