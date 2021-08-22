@@ -70,13 +70,13 @@ void testHashTable() {
     hashTable_insert(hashTable, "var13", t2);
     hashTable_insert(hashTable, "var14", t2);
     hashTable_insert(hashTable, "var15", t2);
-    // hashTable_display(hashTable);
+    hashTable_display(hashTable);
 
     //remove
-    // printf("\nRemove\n\n");
-    // hashTable_remove(hashTable, "var2");
-    // hashTable_remove(hashTable, "var11");
-    // hashTable_display(hashTable);
+    printf("\nRemove\n\n");
+    hashTable_remove(hashTable, "var2");
+    hashTable_remove(hashTable, "var11");
+    hashTable_display(hashTable);
 
     //find
     printf("\nFind\n\n");
@@ -84,18 +84,34 @@ void testHashTable() {
 
     if(t != NULL) {
         tuple_display(t);
+    }else{
+        printf("key: var not found\n");
     };
 
     t = hashTable_find(hashTable, "bar");
 
     if(t != NULL) {
         tuple_display(t);
+    }else{
+        printf("key: bar not found\n");
     };
 
     t = hashTable_find(hashTable, "var2");
 
     if(t != NULL) {
         tuple_display(t);
+    }else{
+        printf("key: var2 not found\n");
     };
 
+    t = hashTable_find(hashTable, "var13");
+
+    if(t != NULL) {
+        tuple_display(t);
+    }else{
+        printf("key: var13 not found\n");
+    };
+
+
+    hashTable_freeHashtable(hashTable);
 }

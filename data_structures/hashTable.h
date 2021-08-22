@@ -75,11 +75,9 @@ Tuple* hashTable_find(HashTable* hashTable, char* key) {
     if(hashTable->hashArray[hashKey] != NULL) {
         Node* node = linkedList_findByKey(hashTable->hashArray[hashKey], key);
         if(node != NULL) return node->tuple;
-
-        return NULL;
-    }else {
-        return NULL;
     }
+
+    return NULL;
 }
 
 void hashTable_display(HashTable* hashTable) {
