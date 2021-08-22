@@ -3,13 +3,16 @@
 #include <string.h>
 #include "./linkedList.h"
 #include "./hashTable.h"
+#include "./stack.h"
 
 void testLinkedList();
 void testHashTable();
+void testStack();
 
 int main(void) {
     //testLinkedList();
-    testHashTable();
+    //testHashTable();
+    testStack();
 }
 
 void testLinkedList() {
@@ -114,4 +117,34 @@ void testHashTable() {
 
 
     hashTable_freeHashtable(hashTable);
+}
+
+void testStack() {
+    Stack *s = stack_create();
+    char *top;
+
+    printf("\nPush\n\n");
+    stack_push(s, "teste");
+    stack_push(s, "teste1");
+    stack_push(s, "teste2");
+    stack_push(s, "teste3");
+    stack_push(s, "teste4");
+    stack_push(s, "teste5");
+    stack_push(s, "teste6");
+    stack_display(s);
+
+    printf("\nPop\n\n");
+    stack_pop(s);
+    stack_pop(s);
+    stack_display(s);
+
+    printf("\nTop\n\n");
+    top = stack_top(s);
+    if(top != NULL) printf("%s\n", top);
+
+    printf("\nTop - Index\n\n");
+    top = stack_topByIndex(s, 2);
+    if(top != NULL) printf("%s\n", top);
+
+    stack_free(s);
 }
