@@ -3,8 +3,11 @@
 #include <string.h>
 #include "./linkedList.h"
 #include "./hashTable.h"
+#include "./tuple.h"
 #include "./stack.h"
 #include "./utils.h"
+
+
 
 void testLinkedList();
 void testHashTable();
