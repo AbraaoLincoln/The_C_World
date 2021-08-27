@@ -5,6 +5,7 @@
 #include "./hashTable.h"
 #include "./tuple.h"
 #include "./stack.h"
+#include "./list.h"
 #include "./utils.h"
 
 
@@ -13,12 +14,14 @@ void testLinkedList();
 void testHashTable();
 void testStack();
 void testeHashtableAndStack();
+void testeList();
 
 int main(void) {
     //testLinkedList();
     //testHashTable();
     //testStack();
-    testeHashtableAndStack();
+    //testeHashtableAndStack();
+    testeList();
 }
 
 void testLinkedList() {
@@ -175,4 +178,33 @@ void testeHashtableAndStack() {
     }else{
         printf("key: %s not found\n", utils_strcat("var", stack_top(s)));
     };
+}
+
+void testeList() {
+    List *list = list_create(5);
+    char str1[5] = "ola1";
+    char str2[5] = "ola2";
+    char str3[5] = "ola3";
+    char* str4 = (char*) malloc(5 * sizeof(char));
+    strcpy(str4, "alo4");
+    char* str5 = (char*) malloc(5 * sizeof(char));
+    strcpy(str5, "alo5");
+    char* str6 = (char*) malloc(5 * sizeof(char));
+    strcpy(str6, "alo6");
+
+    printf("%d\n", list->size);
+    list_add(list, str1);
+    list_add(list, str2);
+    list_add(list, str3);
+    list_add(list, str4);
+    list_add(list, str5);
+    list_add(list, str6);
+    printf("%d\n", list->size);
+    list_pop(list);
+    list_pop(list);
+    list_pop(list);
+    printf("%d\n", list->size);
+    list_add(list, str4);
+    list_add(list, str5);
+    printf("%d\n", list->size);
 }
